@@ -1,4 +1,3 @@
-from matplotlib.pyplot import connect
 import numpy as np
 from math import exp, log
 
@@ -18,27 +17,60 @@ class Stage:
 
     def get_deltav(self):
         upper_deltav = 0
+        upper_mass = 0
         if self.upper_stage:
-            upper_deltav = self.upper_stage.get_deltav()
+            upper_deltav, upper_mass = self.upper_stage.get_deltav()
+            total_dry_mass = self.dry_mass + upper_mass
+            total_wet_mass = total_dry_mass + self.fuel_mass + upper_mass
+            deltav = deltav_formula(total_wet_mass, total_dry_mass, self.I_sp, self.g_0) + upper_deltav
+
+
+
         else:
-            total_dry_mass = self.dry_mass + upper_deltav
+            total_dry_mass = self.dry_mass
             total_wet_mass = total_dry_mass + self.fuel_mass
             deltav = deltav_formula(total_wet_mass, total_dry_mass, self.I_sp, self.g_0)
-            return deltav
+            return deltav, total_wet_mass
+        
+        return deltav
+
+class Rocket():
+    def __init__(self):
+        self.stages = []
+
+    def add_stage(self, stage:Stage):
+        self.stages.append(stage)
+    
+    def get_deltav(self):
+        total_upperstage_deltav = 0
+        total_upperstage_mass = 0
+        for stage in reversed(self.stages):
+            stage_dry_mass = stage.dry_mass + total_upperstage_mass
+            stage_wet_mass = stage_dry_mass + stage.fuel_mass
+            stage_deltav = deltav_formula(stage_wet_mass, stage_dry_mass, stage.I_sp, stage.g_0)
+
+            total_upperstage_deltav += stage_deltav
+            total_upperstage_mass=stage_wet_mass
+            #print(total_upperstage_deltav, total_upperstage_mass)
+        return total_upperstage_deltav
+
+
+
 
 
     
     
-
-
-
-
 
 
 if __name__ == "__main__":
-    stage2 = Stage(0.0898133201 , 1.03285318 , I_sp=305, g_0= 9.807, connects_to=False)
-    stage1 = Stage(0.190643726, 2.19240285, I_sp=305, g_0= 9.807, connects_to=stage2)
+    stage2 = Stage(2.1, 1, I_sp=345, g_0= 9.807)
+    stage1 = Stage(0.8 , 2 , I_sp=345, g_0= 9.807)
 
-    deltav_stage1 = stage1.get_deltav()
-    deltav_stage2 = stage2.get_deltav()
-    print(deltav_stage1, deltav_stage2)
+
+    rocket = Rocket()
+    rocket.add_stage(stage1)
+    rocket.add_stage(stage2)
+    #rocket.add_stage(stage3)
+    #rocket.add_stage(stage4)
+    rocket.get_deltav()
+
