@@ -24,8 +24,6 @@ class Stage:
             total_wet_mass = total_dry_mass + self.fuel_mass + upper_mass
             deltav = deltav_formula(total_wet_mass, total_dry_mass, self.I_sp, self.g_0) + upper_deltav
 
-
-
         else:
             total_dry_mass = self.dry_mass
             total_wet_mass = total_dry_mass + self.fuel_mass
