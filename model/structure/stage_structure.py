@@ -307,11 +307,22 @@ class interStageStructure():
 if __name__ == "__main__":
     
     # Estimando um upperstage
+    #stage = interStageStructure(oxName="LOX",
+    #                            fuelName="RP1",
+    #                            propellantMass=156883.5,
+    #                            MR=2.9,
+    #                            radius=2,
+    #                            tankPressure=0.1,
+    #                            maxEngineThrust=1604988.3,
+    #                            lowerRadius=2.6,
+    #                            upperMass=10000,
+    #                            )
+    #stage.estimate_all()
     stage = interStageStructure(oxName="LOX",
                                 fuelName="RP1",
-                                propellantMass=156883.5,
+                                propellantMass=111500,
                                 MR=2.9,
-                                radius=2,
+                                radius=1.83,
                                 tankPressure=0.1,
                                 maxEngineThrust=1604988.3,
                                 lowerRadius=2.6,
