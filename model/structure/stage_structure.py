@@ -259,16 +259,29 @@ class interStageStructure():
         return
     
     def estimate_tank_fairing_mass(self):
-        self.oxTankFairingSurfaceArea = 2 * math.pi * (self.oxTankCylHeight + self.radius/2)
-        self.fuelTankFairingSurfaceArea = 2 * math.pi * (self.fuelTankCylHeight + self.radius/2)
+        self.oxTankFairingSurfaceArea = 2 * math.pi * (self.oxTankCylHeight + self.radius * 2)
+        self.fuelTankFairingSurfaceArea = 2 * math.pi * (self.fuelTankCylHeight + self.radius * 2)
         self.pressurizationTankFairingSurfaceArea = 2 * math.pi * (self.pressurizationTank.tankRadius)
         self.oxTankFairingMass = self.get_mass_from_area(self.oxTankFairingSurfaceArea)
         self.fuelTankFairingMass = self.get_mass_from_area(self.fuelTankFairingSurfaceArea)
         self.pressurizationTankFairingMass = self.get_mass_from_area(self.pressurizationTankFairingSurfaceArea)
-        self.tankFairingMass = self.oxTankFairingMass + self.fuelTankFairingMass + self.pressurizationTankFairingMass
+        self.tankFairingMass = self.oxTankFairingMass + self.fuelTankFairingMass #+ self.pressurizationTankFairingMass
         if self.verbose:
             print(f"Tank Fairing Mass: {self.tankFairingMass} [kg]")
         return
+
+    def get_total_height(self):
+        self.totalHeight = self.oxTankCylHeight + self.fuelTankCylHeight \
+                           + 4 * self.radius + \
+                            self.engineLength + \
+                            2 * self.pressurizationTank.tankRadius 
+
+        if self.verbose:
+            print(f"Total Stage Height: {self.totalHeight} [m]")
+        return
+
+    
+
 
     def get_total_stage_dry_mass(self):
         self.totalMass = self.oxTankMass + self.oxTankInsulationMass \
@@ -278,10 +291,22 @@ class interStageStructure():
                         + self.thrustFrameMass \
                         + self.interstageMass \
                         + self.separationExplosivesMass \
-                        + self.tankFairingMass
+                        + self.tankFairingMass        
+
+
         if self.verbose:
             print(f"Total Stage Dry Mass: {self.totalMass} [kg]")
         return
+
+    def get_total_surface_area(self):
+        self.totalSurfaceArea = self.oxTankFairingSurfaceArea + \
+                                self.fuelTankFairingSurfaceArea + \
+                                self.intertankStructureArea + \
+                                self.pressurizationTankFairingSurfaceArea
+        if self.verbose:
+            print(f"Total Stage Surface Area: {self.totalSurfaceArea} [m2]")
+        return
+
 
 
     def estimate_all(self):
@@ -299,6 +324,8 @@ class interStageStructure():
         self.estimate_separation_explosives_mass()
         self.estimate_tank_fairing_mass()
         self.get_total_stage_dry_mass()
+        self.get_total_height()
+        self.get_total_surface_area()
         return
     
 
@@ -320,12 +347,12 @@ if __name__ == "__main__":
     #stage.estimate_all()
     stage = interStageStructure(oxName="LOX",
                                 fuelName="RP1",
-                                propellantMass=111500,
+                                propellantMass=156883.5,
                                 MR=2.9,
-                                radius=1.83,
+                                radius=2,
                                 tankPressure=0.1,
-                                maxEngineThrust=1604988.3,
-                                lowerRadius=2.6,
-                                upperMass=10000,
+                                maxEngineThrust=1 * 1604 * 1000,
+                                lowerRadius=False,
+                                upperMass=14000,
                                 )
     stage.estimate_all()

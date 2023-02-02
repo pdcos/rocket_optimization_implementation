@@ -10,7 +10,6 @@ class PayloadBayStructure():
         self.verbose = verbose
 
 
-        # Resolver isso aqui 
         self.totalHeight = 20/9 * self.payloadHeight
         self.triangleHeight = 7/20 * self.totalHeight
         self.cylinderHeight = 9/20 * self.totalHeight
