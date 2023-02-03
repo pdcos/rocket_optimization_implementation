@@ -23,7 +23,7 @@ class PressurizationTank():
                  A_profile = 8*1e-4,
                  n_profile = 3,
                  l_profile = 1,
-                 verbose:bool = True):
+                 verbose:bool = False):
 
         self.tankPressure = tankPressure
         self.tankVolume = tankVolume
@@ -218,7 +218,7 @@ class interStageStructure():
                                                 T_gas=293,
                                                 gamma_gas=1.667,
                                                 gasPressure=29.6,
-                                                verbose=True
+                                                verbose=False
                                                 )
         self.pressurizationTank.estimate_all()
         self.pressurizationTankMass = self.pressurizationTank.tankMass + self.pressurizationTank.gasMass

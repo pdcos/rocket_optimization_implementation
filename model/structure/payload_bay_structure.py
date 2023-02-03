@@ -15,7 +15,6 @@ class PayloadBayStructure():
         self.cylinderHeight = 9/20 * self.totalHeight
         self.frustrumHeight = 4/20 * self.totalHeight
 
-        print(self.totalHeight)
 
         #self.triangleHeight = 7/20 * self.totalHeight
         #self.cylinderHeight = 9/20 * self.totalHeight
@@ -64,7 +63,7 @@ class PayloadBayStructure():
         return
 
     def estimate_total_mass(self):
-        self.totalMass = self.totalPayloadFairingMass + self.electronicMass + self.powerMass
+        self.totalMass = self.totalPayloadFairingMass + self.electronicMass + self.powerMass + self.payloadMass
         if self.verbose:
             print(f"Total Payload Mass: {self.totalMass} [kg]")
         return
