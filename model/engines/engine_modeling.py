@@ -125,10 +125,14 @@ class EngineProp:
             print(f"Engine Mass: {self.massTvc} [kg]")
         return self.massTvc
 
+    def get_total_mass(self):
+        self.totalMass = self.massTvc + self.engineMass
+
     def estimate_all(self):
         self.calcEngineProperties()
         self.estimate_engine_mass()
         self.estimate_tvc_mass()
+        self.get_total_mass()
         return
 
 

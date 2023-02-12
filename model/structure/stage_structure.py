@@ -287,11 +287,11 @@ class interStageStructure():
         self.totalMass = self.oxTankMass + self.oxTankInsulationMass \
                         + self.fuelTankMass + self.oxTankInsulationMass \
                         + self.pressurizationTankMass \
-                        + self.intertankStructureMass \
                         + self.thrustFrameMass \
                         + self.interstageMass \
                         + self.separationExplosivesMass \
                         + self.tankFairingMass        
+                        #+ self.intertankStructureMass \ # Não precisa porque as esferas já estão inclusas em estimate_tank_fairing_mass
 
 
         if self.verbose:
