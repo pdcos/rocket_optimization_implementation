@@ -76,7 +76,8 @@ class EngineProp:
                                      T_c = Tc,
                                      gamma = gamma,
                                      m_molar = m_molar
-                                     )   
+                                     ) 
+
         if self.verbose:
             print("Isp Vac (s): " + str(IspVac))
             print("Isp Sea (s): " + str(IspSea))
@@ -134,6 +135,14 @@ class EngineProp:
         self.estimate_tvc_mass()
         self.get_total_mass()
         return
+    
+    def print_all_parameters(self):
+        print("Isp Vac (s): " + str(self.IspVac))
+        print("Isp Sea (s): " + str(self.IspSea))
+        print("Mass flow (kg/s): " + str(self.massFlow))
+        print("Thrust Vac (kN): " + str(self.thrustVac/1000))
+        print("Thrust Sea (kN): " + str(self.thrustSea/1000))
+
 
 
 
@@ -147,3 +156,4 @@ if __name__ == "__main__":
                     eps=21.4)
 
     engine.estimate_all()
+    engine.print_all_parameters()

@@ -307,7 +307,17 @@ class interStageStructure():
             print(f"Total Stage Surface Area: {self.totalSurfaceArea} [m2]")
         return
 
-
+    def print_all_parameters(self):
+        print(f"Ox Tank Cylyndrical Height: {self.oxTankCylHeight} [m]")
+        print(f"Fuel Tank Cylyndrical Height: {self.fuelTankCylHeight} [m]")
+        print(f"Ox Tank Volume: {self.oxTankVolume} [m3]")
+        print(f"Fuel Tank Volume: {self.fuelTankVolume} [m3]")
+        print(f"Intertank Structure Mass: {self.intertankStructureMass} [kg]")
+        print(f"Separation Explosives Mass: {self.separationExplosivesMass} [kg]")
+        print(f"Tank Fairing Mass: {self.tankFairingMass} [kg]")
+        print(f"Total Stage Height: {self.totalHeight} [m]")
+        print(f"Total Stage Dry Mass: {self.totalMass} [kg]")
+        print(f"Total Stage Surface Area: {self.totalSurfaceArea} [m2]")
 
     def estimate_all(self):
         self.estimate_tank_volume()

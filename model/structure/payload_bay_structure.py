@@ -73,6 +73,17 @@ class PayloadBayStructure():
         self.estimate_fairing_mass()
         self.estimate_avionics_mass()
         self.estimate_total_mass()
+    
+    def print_all_parameters(self):
+        print(f"Cone Area: {self.coneArea} [kg]")    
+        print(f"Cylinder Area: {self.cylinderArea} [kg]")
+        print(f"Frustrum Area: {self.frustrumArea} [kg]")
+        print(f"Total Payload Fairing Mass: {self.totalPayloadFairingMass} [kg]")
+        #print(f"Payload Adapter Mass: {self.payloadAdapterMass} [kg]")
+        print(f"Electronic Mass: {self.electronicMass} [kg]")
+        print(f"Power Mass: {self.powerMass} [kg]")
+        print(f"Total Payload Mass: {self.totalMass} [kg]")
+
 
 if __name__ == "__main__":
     payload = PayloadBayStructure(6.7, 4.6/2, 1.83, 5000, 1000)

@@ -1,16 +1,19 @@
 import numpy as np
 import math
-
-from structure.payload_bay_structure import PayloadBayStructure
-from structure.stage_structure import interStageStructure
-from engines.engine_modeling import EngineProp
-
+try:
+    from model.structure.payload_bay_structure import PayloadBayStructure
+    from model.structure.stage_structure import interStageStructure
+    from model.engines.engine_modeling import EngineProp
+except:
+    from structure.payload_bay_structure import PayloadBayStructure
+    from structure.stage_structure import interStageStructure
+    from engines.engine_modeling import EngineProp
 
 
 class RocketModel():
     def __init__(self, upperEngineParams, firstEngineParams, payloadBayParams, upperStageStructureParams, firstStageStructureParams, deltaV_upperStage, deltaV_landing, deltaV_firstStage, nEnginesUpperStage, nEnignesFirstStage):
         self.upperEngineParams = upperEngineParams
-        self.firsEngineParams = firstEngineParams
+        self.firstEngineParams = firstEngineParams
         self.payloadBayParams = payloadBayParams
         self.upperStageStructureParams = upperStageStructureParams
         self.firstStageStructureParams = firstStageStructureParams
@@ -31,12 +34,12 @@ class RocketModel():
                                            nozzleDiam = self.upperEngineParams["nozzleDiam"],
                                            eps = self.upperEngineParams["eps"],
                                            verbose=False)
-        self.firstStageEngine = EngineProp(fuelName = self.firsEngineParams["fuelName"],
-                                           oxName = self.firsEngineParams["oxName"],
-                                           Pc = self.firsEngineParams["combPressure"],
-                                           MR = self.firsEngineParams["MR"],
-                                           nozzleDiam = self.firsEngineParams["nozzleDiam"],
-                                           eps = self.firsEngineParams["eps"],
+        self.firstStageEngine = EngineProp(fuelName = self.firstEngineParams["fuelName"],
+                                           oxName = self.firstEngineParams["oxName"],
+                                           Pc = self.firstEngineParams["combPressure"],
+                                           MR = self.firstEngineParams["MR"],
+                                           nozzleDiam = self.firstEngineParams["nozzleDiam"],
+                                           eps = self.firstEngineParams["eps"],
                                            verbose=False)
         
         self.upperStageEngine.estimate_all()
@@ -67,8 +70,8 @@ class RocketModel():
                                                         fuelName=self.upperStageStructureParams["fuelName"],
                                                         propellantMass=propellantMass,
                                                         MR=self.upperStageEngine.MR,
-                                                        radius=upperStageStructureParams["radius"],
-                                                        tankPressure=upperStageStructureParams["tankPressure"],
+                                                        radius=self.upperStageStructureParams["radius"],
+                                                        tankPressure=self.upperStageStructureParams["tankPressure"],
                                                         maxEngineThrust=self.upperStageEngine.thrustVac,
                                                         lowerRadius=False,
                                                         upperMass=m_pl,
@@ -145,8 +148,19 @@ class RocketModel():
         #self.build_landing()
         self.build_first_stage()
     
-    def get_glow(self):
-        glow = self.nEnginesFirstStage 
+    def print_all_parameters(self):
+        print( "*"*5 + " Payload Bay " + "*"*5) 
+        self.payloadBay.print_all_parameters()
+        print( "*"*5 + " Upper Stage Engine " + "*"*5) 
+        self.upperStageEngine.print_all_parameters()
+        print( "*"*5 + " Upper Stage Structure " + "*"*5) 
+        self.upperStageStructure.print_all_parameters()
+        print( "*"*5 + " First Stage Engine " + "*"*5) 
+        self.firstStageEngine.print_all_parameters()
+        print( "*"*5 + " First Stage Structure " + "*"*5) 
+        self.firstStageStructure.print_all_parameters()
+
+
 
 if __name__ == "__main__":
     engineParams = {"oxName": "LOX",
@@ -175,7 +189,7 @@ if __name__ == "__main__":
                                  "tankPressure": 0.1,
                                  "radius": 2,
                                 } # 0 porque ainda nao temos esse valor
-    upperStageStructureParams = {"oxName": "LOX",
+    lowerStageStructureParams = {"oxName": "LOX",
                                 "fuelName": "RP1",
                                 "MR": 2.9,
                                 "tankPressure": 0.1,
@@ -187,7 +201,7 @@ if __name__ == "__main__":
                                firstEngineParams=engineParamsFirst,
                                payloadBayParams=payloadBayParams,
                                upperStageStructureParams=upperStageStructureParams,
-                               firstStageStructureParams = upperStageStructureParams,
+                               firstStageStructureParams = lowerStageStructureParams,
                                deltaV_upperStage=8000,
                                deltaV_landing=2000,
                                deltaV_firstStage=4000,
@@ -195,4 +209,5 @@ if __name__ == "__main__":
                                nEnignesFirstStage=9)
 
     rocket_model.build_all()
-    print(rocket_model.firstStageEngine.IspSea)
+    rocket_model.print_all_parameters()
+    print(rocket_model.glow)
