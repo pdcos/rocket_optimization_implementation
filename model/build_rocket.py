@@ -81,6 +81,7 @@ class RocketModel():
 
             dryMass = self.upperStageStructure.totalMass + self.upperStageEngine.totalMass * self.nEnginesUpperStage
             coef_e2 = dryMass/(dryMass + propellantMass)
+            #print(self.upperStageStructure.totalMass)
 
             self.payloadBay.S_rocket = self.upperStageStructure.totalSurfaceArea
             self.build_payload_bay()
@@ -147,7 +148,8 @@ class RocketModel():
         self.build_upper_stage()
         #self.build_landing()
         self.build_first_stage()
-    
+        self.totalHeight = self.upperStageStructure.totalHeight + self.firstStageStructure.totalHeight + self.payloadBay.totalHeight
+
     def print_all_parameters(self):
         print( "*"*5 + " Payload Bay " + "*"*5) 
         self.payloadBay.print_all_parameters()
@@ -159,6 +161,14 @@ class RocketModel():
         self.firstStageEngine.print_all_parameters()
         print( "*"*5 + " First Stage Structure " + "*"*5) 
         self.firstStageStructure.print_all_parameters()
+        print( "*"*5 + " Rocket Characteristics " + "*"*5) 
+        print(f"Total Rocket Height: {self.totalHeight} [m]")
+        print(f"Propellant Mass - Upper Stage: {self.m_p_2} [kg]")
+        print(f"Propellant Mass - First Stage: {self.m_p_1} [kg]")
+        print(f"Total Mass - Upper Stage: {self.m_0_2} [kg]")
+        print(f"Total Mass - First Stage: {self.m_0_1} [kg]")
+        print(f"GLOW: {self.glow} [kg]")
+
 
 
 
@@ -166,34 +176,34 @@ if __name__ == "__main__":
     engineParams = {"oxName": "LOX",
                     "fuelName": "RP-1",
                     "combPressure": 11.5 * 1e6,
-                    "MR": 2.9,
+                    "MR": 2.8,
                     "nozzleDiam": 0.23125,
-                    "eps": 190}
+                    "eps": 180}
 
     engineParamsFirst = {"oxName": "LOX",
                     "fuelName": "RP-1",
                     "combPressure": 11.5 * 1e6,
-                    "MR": 2.9,
+                    "MR": 2.8,
                     "nozzleDiam": 0.23125,
-                    "eps": 30}
+                    "eps": 25}
 
     payloadBayParams = {"payloadHeight": 6.7,
                         "payloadRadius": 4.6/2,
                         "payloadMass": 7500,
-                        "lowerStageRadius": 4.6/2,
+                        "lowerStageRadius": 2.1,
                         "lowerRocketSurfaceArea": 0} # 0 porque ainda nao temos esse valor
 
     upperStageStructureParams = {"oxName": "LOX",
                                  "fuelName": "RP1",
-                                 "MR": 2.9,
+                                 "MR": 2.8,
                                  "tankPressure": 0.1,
-                                 "radius": 2,
+                                 "radius": 2.1,
                                 } # 0 porque ainda nao temos esse valor
     lowerStageStructureParams = {"oxName": "LOX",
                                 "fuelName": "RP1",
-                                "MR": 2.9,
+                                "MR": 2.8,
                                 "tankPressure": 0.1,
-                                "radius": 2.6,
+                                "radius": 2.8,
                             } # 0 porque ainda nao temos esse valor
 
 
@@ -206,7 +216,7 @@ if __name__ == "__main__":
                                deltaV_landing=2000,
                                deltaV_firstStage=4000,
                                nEnginesUpperStage=1,
-                               nEnignesFirstStage=9)
+                               nEnignesFirstStage=10)
 
     rocket_model.build_all()
     rocket_model.print_all_parameters()
